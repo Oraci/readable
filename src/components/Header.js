@@ -6,7 +6,6 @@ const MainHeader = styled.div`
   display: block;
   text-align: center;
   justify-content: center;
-  border: 1px solid black;
 `;
 
 const HeaderTitle = styled.div`

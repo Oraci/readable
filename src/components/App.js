@@ -17,13 +17,11 @@ const Main = styled.div`
   width: 100%;
   background: white;
   display: flex;
-  border: 2px solid blue;
   flex-direction: column;
 `;
 
 const Body = styled.div`
   flex: 1;
-  border: 2px solid red;
 `;
 
 const OpenPostContent = styled.div`
@@ -71,7 +69,7 @@ class App extends Component {
           />
           <ListPosts />
           <OpenPostContent>
-            <OpenPostLink to="/search" />
+            <OpenPostLink to="/post" />
           </OpenPostContent>
         </Body>
       </Main>
