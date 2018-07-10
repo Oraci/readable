@@ -22,6 +22,8 @@ const Main = styled.div`
 
 const Body = styled.div`
   flex: 1;
+  flex-direction: row;
+  display: flex;
 `;
 
 const OpenPostContent = styled.div`

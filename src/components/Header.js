@@ -18,6 +18,7 @@ const Title = styled.h1`
   font-weight: 400;
   margin: 16px;
   color: white;
+  font-size: 50px;
 
   a {
     text-decoration: none;
@@ -36,7 +37,7 @@ class Header extends Component {
     return(
       <MainHeader>
         <HeaderTitle>
-          <Title><Link to={"/"}>Readable</Link></Title>
+          <Title><Link to={"/"}>READABLE</Link></Title>
           <SubTitle>Add your posts and make your comments! Feel free!</SubTitle>
         </HeaderTitle>
       </MainHeader>
