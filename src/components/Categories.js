@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
-import CalendarIcon from 'react-icons/lib/fa/search';
 import { capitalize } from '../utils/helpers';
 import {Link} from 'react-router-dom';
 
 const CategoriesContent = styled.div`
   justify-content: center;
   display: flex;
-  padding: 16px;
   align-items: center;
   min-width: 200px;
   flex-direction: column;
@@ -60,7 +58,6 @@ class Categories extends Component {
 
     return (
       <CategoriesContent>
-        <Title>Categories</Title>
         <Ul>
         <Li key={'All'}> 
           <CategoryLink to={"/"}>{'All'}</CategoryLink>

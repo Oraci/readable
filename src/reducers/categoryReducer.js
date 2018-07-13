@@ -5,7 +5,7 @@ function categories(state = [], action) {
 
   switch (type) {
     case RECEIVE_CATEGORIES:
-      return [...state, ...categories]
+      return [...state, ...categories];
     default:
       return state;
   }

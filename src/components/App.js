@@ -69,7 +69,7 @@ class App extends Component {
           <Categories
             categories={categories}
           />
-          <ListPosts />
+          <ListPosts posts={posts} />
           <OpenPostContent>
             <OpenPostLink to="/post" />
           </OpenPostContent>
