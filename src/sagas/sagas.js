@@ -16,9 +16,9 @@ function* requestCategoriesSaga() {
   yield takeLatest(ACTIONS.REQUEST_CATEGORIES, requestCategories);
 }
 
-function* requestPosts() {
+function* requestPosts({category}) {
   try {
-    const data = yield call(API.fetchPosts);
+    const data = yield call(API.fetchPosts, category);
     yield put(receivePosts(data));
   } catch(e) {
     console.log(e);

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import thumbUp from '../icons/thumb-up-button.svg';
 import thumbDown from '../icons/thumb-down-button.svg';
 import { printDate } from '../utils/helpers';
+import {Link} from 'react-router-dom';
 
 const PostContent = styled.div`
   display: flex;
@@ -40,6 +41,17 @@ const Author = styled.p`
   font-style: italic;
 `;
 
+const CategoryLink = styled(Link)`
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 32px;
+  padding-left: 12px;
+  padding-right: 12px;
+  user-select: none;
+  white-space: nowrap;
+`;
+
 
 class Post extends Component {  
   render() {
@@ -48,6 +60,7 @@ class Post extends Component {
     return (
       <PostContent>
         <Title>{post.title}</Title>
+        <CategoryLink to={`/${post.category}`}>{post.category}</CategoryLink>
         <Author>By {post.author} under {post.category} on {printDate(post.timestamp)}</Author>
         <DivActions>
           <DivImg><SpanImg img={thumbUp}/></DivImg>

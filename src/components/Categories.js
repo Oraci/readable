@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
-import { capitalize } from '../utils/helpers';
+import {capitalize} from '../utils/helpers';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 const CategoriesContent = styled.div`
   justify-content: center;
@@ -10,25 +11,7 @@ const CategoriesContent = styled.div`
   min-width: 200px;
   flex-direction: column;
   margin: 0;
-`;
-
-const Title = styled.h1`
-  font-size: 18px;
-  margin: 0;
-`;
-
-const CategoriesSelect = styled.select`
-  outline: 0px;
-  border-radius: 8px;
-  height: 40px;
-  cursor: pointer;
-  margin-right: 8px;
-  min-width: 100px;
-  padding: 8px;  
-
-  option:checked, option:hover {
-    color: #f2af1e;
-  }
+  height: 100%;
 `;
 
 const Ul = styled.ul`
@@ -37,22 +20,16 @@ const Ul = styled.ul`
 `;
 
 const Li = styled.li`
+  padding: 5px;  
 `;
 
-const CategoryLink = styled(Link)`
-  text-decoration: none;
-
-  a:hover,
-  a:focus {
-    border: 2px solid rgb(61, 146, 201);
-  }
-
-  a:active {
-    text-decoration: underline;
-  }
+const LinkCategory = styled(Link)`
+  font-size: 14px;
+  cursor: pointer;
+  width: 100px;
 `;
 
-class Categories extends Component {   
+class Categories extends Component {
   render() {
     const {categories} = this.props;
 
@@ -60,12 +37,14 @@ class Categories extends Component {
       <CategoriesContent>
         <Ul>
         <Li key={'All'}> 
-          <CategoryLink to={"/"}>{'All'}</CategoryLink>
+          <LinkCategory to={"/"}>{'All'}</LinkCategory>
         </Li>
         {
           categories.length && categories.map(category => (
             <Li key={category.name}> 
-              <CategoryLink to={`${category.path}`}>{capitalize(category.name)}</CategoryLink>
+              <LinkCategory 
+                to={`${category.path}`}
+              >{capitalize(category.name)}</LinkCategory>
             </Li>
           ))
         }
@@ -75,4 +54,10 @@ class Categories extends Component {
   }
 }
 
-export default Categories;
+const mapStateToProps = (state) => {
+  return {...state}
+}
+
+export default connect(
+  mapStateToProps
+)(Categories);

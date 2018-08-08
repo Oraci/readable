@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Route, Link, withRouter} from 'react-router-dom';
 import Header from './Header';
 import Categories from './Categories';
 import ListPosts from './ListPosts';
@@ -8,8 +8,7 @@ import img from '../icons/message-bubble.svg';
 import {connect} from 'react-redux';
 
 import {
-  requestCategories,
-  requestPosts
+  requestCategories
 } from '../actions';
 
 const Main = styled.div`
@@ -47,29 +46,27 @@ const OpenPostLink = styled(Link)`
 `;
 
 class App extends Component {
-  updateBookShelf(state) {
-    console.log("teste");
-  }
-
   componentDidMount() {
-    const {getCategories, getPosts} = this.props;
+    const {getCategories} = this.props;
 
     getCategories();
-    getPosts();
   }
   
   render() {
-    const {categories, posts} = this.props;
+    const {categories} = this.props;
 
     return (
       <Main>
         <Header>
         </Header>
         <Body>
-          <Categories
-            categories={categories}
-          />
-          <ListPosts posts={posts} />
+          <Categories categories={categories} />
+
+          <div>
+            <Route exact path="/" component={ListPosts} />
+            <Route exact path="/:category" component={ListPosts} />
+          </div>
+
           <OpenPostContent>
             <OpenPostLink to="/post" />
           </OpenPostContent>
@@ -79,18 +76,17 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {...state}
-}
+const mapStateToProps = ({ categories }) => ({
+  categories: [...categories],
+});
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getCategories: () => dispatch(requestCategories()),
-    getPosts: () => dispatch(requestPosts())
   }
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(App));

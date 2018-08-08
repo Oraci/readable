@@ -12,8 +12,9 @@ export const requestCategories = () => ({
 export const receivePosts = (posts) => ({
   type: ACTIONS.RECEIVE_POSTS,
   posts
-})
+});
 
-export const requestPosts = () => ({
-  type: ACTIONS.REQUEST_POSTS
-})
+export const requestPosts = (category) => ({
+  type: ACTIONS.REQUEST_POSTS,
+  category
+});

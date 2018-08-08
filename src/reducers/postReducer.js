@@ -5,7 +5,7 @@ function posts(state = [], action) {
 
   switch (type) {
     case RECEIVE_POSTS:
-      return [...state, ...posts];
+      return posts.filter( p => !p.deleted);
     default:
       return state;
   }
