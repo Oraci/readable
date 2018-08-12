@@ -7,9 +7,7 @@ import styled from 'styled-components';
 import img from '../icons/message-bubble.svg';
 import {connect} from 'react-redux';
 
-import {
-  requestCategories
-} from '../actions';
+import { REQUEST_CATEGORIES } from '../sagas/categories';
 
 const Main = styled.div`
   height: 100%;
@@ -76,13 +74,13 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ categories }) => ({
+const mapStateToProps = ({categories}) => ({
   categories: [...categories],
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCategories: () => dispatch(requestCategories()),
+    getCategories: () => dispatch({type: REQUEST_CATEGORIES}),
   }
 }
 

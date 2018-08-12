@@ -1,4 +1,4 @@
-import {RECEIVE_CATEGORIES} from '../actions/types';
+import {RECEIVE_CATEGORIES} from '../sagas/categories';
 
 function categories(state = [], action) {
   const {type, categories} = action;

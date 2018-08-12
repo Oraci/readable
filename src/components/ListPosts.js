@@ -4,10 +4,7 @@ import Post from './Post';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import {
-  requestPosts
-} from '../actions';
-
+import { REQUEST_POSTS } from '../sagas/posts';
 
 const ListPostsContent = styled.div`
   display: flex;
@@ -19,43 +16,35 @@ const ListPostsContent = styled.div`
 class ListPosts extends Component {
   componentDidMount() {
     const {getPosts} = this.props;
-
     getPosts(this.getCategory());
   }
 
   componentDidUpdate(prevProps) {
-    const { match, getPosts } = this.props;
-    const { match: previousMatch } = prevProps;
+    const {match, getPosts} = this.props;
+    const {match: previousMatch} = prevProps;
 
     if (match.params.category !== previousMatch.params.category) {
       getPosts(this.getCategory());
-      debugger;
     }
   }
 
   getCategory = () => {
-    const { match } = this.props;
-
+    const {match} = this.props;
     return match.params.category;
-  };  
+  };
 
   render() {
     const {posts} = this.props;
-    const filter = this.getCategory();
-
-    let filteredPosts = [];
-    if (filter) {
-      filteredPosts = posts.filter((p) => p.category === filter);
-    } else {
-      filteredPosts = posts;
-    }
-
-    debugger;
+    const category = this.getCategory();
+    const filteredPosts = category ? posts.filter((p) => p.category === category) : posts;
+    const title = `Showing ${category ? `posts for ${category}` : 'all posts'}`;
 
     return (
       <ListPostsContent>
-        { filteredPosts.length === 0 &&
-          <div>No posts</div> 
+        <h2>{title}</h2>
+      
+        {
+          filteredPosts.length === 0 && <div>No posts</div>
         }
 
         {
@@ -74,7 +63,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosts: (category) => dispatch(requestPosts(category)),
+    getPosts: (category) => dispatch({type: REQUEST_POSTS, category}),
   }
 }
 

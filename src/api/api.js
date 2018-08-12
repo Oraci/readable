@@ -11,6 +11,15 @@ const headers = {
   'Authorization': token
 }
 
+const post = (path: string, params: Object) =>
+  fetch(`${api}${path}`, {
+    method: 'POST',
+    headers: {
+      ...headers
+    },
+    body: JSON.stringify({ ...params }),
+  });
+
 export const fetchCategories = () =>
   fetch(`${api}/categories`, {headers})
     .then(res => res.json())
@@ -20,3 +29,9 @@ export const fetchPosts = (category: string) =>
   fetch(`${api}${category ? `/${category}/posts` : '/posts'}`, {headers})
     .then(res => res.json())
     .then(data => data);
+
+export const postVotes = (postId: string, option: string) =>
+  post(`/posts/${postId}`, { option })
+    .then(res => res.json())
+    .then(data => data);
+  

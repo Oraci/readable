@@ -4,6 +4,10 @@ import thumbUp from '../icons/thumb-up-button.svg';
 import thumbDown from '../icons/thumb-down-button.svg';
 import { printDate } from '../utils/helpers';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+
+import { REQUEST_POST_SCORE } from '../sagas/posts';
 
 const PostContent = styled.div`
   display: flex;
@@ -52,23 +56,49 @@ const CategoryLink = styled(Link)`
   white-space: nowrap;
 `;
 
+class Post extends Component {
+  onUpvote = () => {
+    const { post, postScore } = this.props;
+  
+    postScore(post.id, 'upVote');
+  };
 
-class Post extends Component {  
+  onDownvote = () => {
+    const { post, postScore } = this.props;
+    
+    postScore(post.id, 'downVote');
+  };
+
   render() {
     const {post} = this.props;
+    const {title, category, author, timestamp, voteScore} = post;
 
     return (
       <PostContent>
-        <Title>{post.title}</Title>
-        <CategoryLink to={`/${post.category}`}>{post.category}</CategoryLink>
-        <Author>By {post.author} under {post.category} on {printDate(post.timestamp)}</Author>
+        <Title>{title}</Title>
+        <CategoryLink to={`/${category}`}>{category}</CategoryLink>
+        <Author>By {author} under {category} on {printDate(timestamp)}</Author>
         <DivActions>
-          <DivImg><SpanImg img={thumbUp}/></DivImg>
-          <DivImg><SpanImg img={thumbDown}/></DivImg>
+          <DivImg><SpanImg img={thumbUp} onClick={this.onUpvote} /></DivImg>
+          <DivImg><SpanImg img={thumbDown} onClick={this.onDownvote} /></DivImg>
+          <div><span>{voteScore}</span></div>
         </DivActions>  
       </PostContent>
     )
   }
 }
 
-export default Post;
+const mapStateToProps = (state) => {
+  return { ...state }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    postScore: (postId, option) => dispatch({type: REQUEST_POST_SCORE, postId, option})
+  }
+}
+
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Post));
