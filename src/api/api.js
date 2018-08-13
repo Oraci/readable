@@ -30,6 +30,11 @@ export const fetchPosts = (category: string) =>
     .then(res => res.json())
     .then(data => data);
 
+export const addPost = (newPost: Post) =>
+  post('/posts', newPost)
+    .then(res => res.json())
+    .then(data => data);
+
 export const postVotes = (postId: string, option: string) =>
   post(`/posts/${postId}`, { option })
     .then(res => res.json())

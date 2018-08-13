@@ -57,8 +57,13 @@ class ListPosts extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {...state}
+const mapStateToProps = ({posts = {}, categories= []}) => {
+  return {
+    posts: [...posts.posts],
+    categories: [...categories],
+    showNewPostModal: posts.showNewPostModal,
+    showEditPostModal: posts.showEditPostModal,      
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

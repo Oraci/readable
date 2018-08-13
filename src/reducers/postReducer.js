@@ -1,14 +1,20 @@
-import {RECEIVE_POSTS, RECEIVE_POST_SCORE} from '../sagas/posts';
+import {RECEIVE_POSTS, RECEIVE_POST_SCORE, TOGGLE_ADD_POST_MODAL, ADD_NEW_POST} from '../sagas/posts';
 
-function posts(state = [], action) {
-  const {type, posts, voted} = action;
+const initialState = {
+  posts: [],
+  showNewPostModal: false,
+  showEditPostModal: false,
+};
+
+function posts(state = initialState, action) {
+  const {type, posts, voted, added} = action;
 
   switch (type) {
     case RECEIVE_POSTS:
-      return posts && posts.filter( p => !p.deleted) || state;
+      return Object.assign({...state, posts: [...posts]});
 
     case RECEIVE_POST_SCORE:
-      return state.map(p => {
+      const newPosts = state.posts.map(p => {
         if (p.id !== voted.id) {
           return p;
         }
@@ -16,6 +22,24 @@ function posts(state = [], action) {
           ...p,
           voteScore: voted.voteScore
         }
+      }) || [];
+
+      return Object.assign({
+        ...state, 
+        posts: [...newPosts]
+      });
+
+    case TOGGLE_ADD_POST_MODAL:
+      return Object.assign({
+        ...state, 
+        showNewPostModal: !state.showNewPostModal
+      });
+
+    case ADD_NEW_POST:
+      return Object.assign({
+        ...state, 
+        posts: [...state.posts, added],
+        showNewPostModal: false
       });
     default:
       return state;

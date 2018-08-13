@@ -6,8 +6,11 @@ import ListPosts from './ListPosts';
 import styled from 'styled-components';
 import img from '../icons/message-bubble.svg';
 import {connect} from 'react-redux';
+import Modal from 'react-modal';
+import NewPost from '../modals/NewPost';
 
 import { REQUEST_CATEGORIES } from '../sagas/categories';
+import {WATCH_TOGGLE_ADD_POST_MODAL} from '../sagas/posts';
 
 const Main = styled.div`
   height: 100%;
@@ -29,7 +32,7 @@ const OpenPostContent = styled.div`
   bottom: 25px;
 `;
 
-const OpenPostLink = styled(Link)`
+const OpenPostLink = styled.span`
   display: block;
   width: 50px;
   height: 50px;
@@ -41,6 +44,7 @@ const OpenPostLink = styled(Link)`
   background-size: 28px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   font-size: 0;
+  cursor: pointer;
 `;
 
 class App extends Component {
@@ -49,9 +53,24 @@ class App extends Component {
 
     getCategories();
   }
+
+  renderNewPostModal = () => {
+    const { showNewPostModal, toggleAddPostModal } = this.props;
+
+    return (
+      <Modal
+        ariaHideApp={false}
+        isOpen={showNewPostModal}
+        shouldCloseOnOverlayClick
+        onRequestClose={toggleAddPostModal}
+      >
+        <NewPost />
+      </Modal>
+    );
+  };
   
   render() {
-    const {categories} = this.props;
+    const {categories, toggleAddPostModal} = this.props;
 
     return (
       <Main>
@@ -66,21 +85,27 @@ class App extends Component {
           </div>
 
           <OpenPostContent>
-            <OpenPostLink to="/post" />
+            <OpenPostLink onClick={toggleAddPostModal} />
           </OpenPostContent>
         </Body>
+
+        {this.renderNewPostModal()}
       </Main>
     );
   }
 }
 
-const mapStateToProps = ({categories}) => ({
-  categories: [...categories],
-});
+const mapStateToProps = ({categories, posts}) => {
+  return {
+    categories: [...categories],
+    showNewPostModal: posts.showNewPostModal
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getCategories: () => dispatch({type: REQUEST_CATEGORIES}),
+    toggleAddPostModal: () => dispatch({ type: WATCH_TOGGLE_ADD_POST_MODAL })
   }
 }
 
