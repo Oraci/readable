@@ -9,7 +9,6 @@ import ListPosts from './ListPosts';
 import Post from './Post';
 import TextArea from './TextArea';
 import TextInput from './TextInput';
-import Toolbar from './Toolbar';
 
 export {
   App,
@@ -23,5 +22,4 @@ export {
   Post,
   TextArea,
   TextInput,
-  Toolbar
 };

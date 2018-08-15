@@ -2,14 +2,21 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import thumbUp from '../icons/thumb-up-button.svg';
 import thumbDown from '../icons/thumb-down-button.svg';
+import thumbEdit from '../icons/edit.svg';
+import thumbDelete from '../icons/delete.svg';
 import { printDate } from '../utils/helpers';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 
-import { REQUEST_POST_SCORE } from '../sagas/posts';
+import { 
+  REQUEST_POST_SCORE, 
+  FETCH_DELETE_POST,
+  WATCH_TOGGLE_EDIT_POST_MODAL
+} from '../sagas/posts';
 
 const PostContent = styled.div`
+  border-top: 1px solid #f2af1e;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -19,11 +26,12 @@ const Title = styled.h1``;
 
 const DivActions = styled.div`
   display: flex;
-  height: 40px;
+  margin-bottom: 10px;
 `;
 
-const DivImg = styled.div`
+const ActionDiv = styled.div`
   display: flex;
+  padding-right: 10px;
 `;
 
 const SpanImg = styled.span`
@@ -69,6 +77,18 @@ class Post extends Component {
     postScore(post.id, 'downVote');
   };
 
+  onDelete = () => {
+    const { post, deletePost } = this.props;
+
+    deletePost(post.id);
+  }
+
+  onEdit = () => {
+    const { post, toggleEditPostModal } = this.props;
+
+    toggleEditPostModal(post);
+  };
+
   render() {
     const {post} = this.props;
     const {title, category, author, timestamp, voteScore} = post;
@@ -78,11 +98,14 @@ class Post extends Component {
         <Title>{title}</Title>
         <CategoryLink to={`/${category}`}>{category}</CategoryLink>
         <Author>By {author} under {category} on {printDate(timestamp)}</Author>
+
         <DivActions>
-          <DivImg><SpanImg img={thumbUp} onClick={this.onUpvote} /></DivImg>
-          <DivImg><SpanImg img={thumbDown} onClick={this.onDownvote} /></DivImg>
-          <div><span>{voteScore}</span></div>
-        </DivActions>  
+          <ActionDiv><SpanImg img={thumbUp} onClick={this.onUpvote} /></ActionDiv>
+          <ActionDiv><SpanImg img={thumbDown} onClick={this.onDownvote} /></ActionDiv>
+          <ActionDiv><span>{voteScore}</span></ActionDiv>
+          <ActionDiv><SpanImg img={thumbEdit} onClick={this.onEdit} />Editar</ActionDiv>
+          <ActionDiv><SpanImg img={thumbDelete} onClick={this.onDelete} />Deletar</ActionDiv>
+        </DivActions>
       </PostContent>
     )
   }
@@ -94,7 +117,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    postScore: (postId, option) => dispatch({type: REQUEST_POST_SCORE, postId, option})
+    postScore: (postId, option) => dispatch({type: REQUEST_POST_SCORE, postId, option}),
+    deletePost: post => dispatch({ type: FETCH_DELETE_POST, post }),
+    toggleEditPostModal: post => dispatch({ type: WATCH_TOGGLE_EDIT_POST_MODAL, post }),
   }
 }
 

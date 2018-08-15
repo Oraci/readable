@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Link, withRouter} from 'react-router-dom';
+import {Route, withRouter} from 'react-router-dom';
 import Header from './Header';
 import Categories from './Categories';
 import ListPosts from './ListPosts';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import img from '../icons/message-bubble.svg';
 import {connect} from 'react-redux';
 import Modal from 'react-modal';
-import NewPost from '../modals/NewPost';
+import {NewPost, EditPost} from '../modals';
 
 import { REQUEST_CATEGORIES } from '../sagas/categories';
 import {WATCH_TOGGLE_ADD_POST_MODAL} from '../sagas/posts';
@@ -24,6 +24,10 @@ const Body = styled.div`
   flex: 1;
   flex-direction: row;
   display: flex;
+`;
+
+const ContentPost = styled.div`
+  width: 100%;
 `;
 
 const OpenPostContent = styled.div`
@@ -68,6 +72,21 @@ class App extends Component {
       </Modal>
     );
   };
+
+  renderEditPostModal = () => {
+    const { showEditPostModal, toggleEditPostModal } = this.props;
+
+    return (
+      <Modal
+        ariaHideApp={false}
+        isOpen={showEditPostModal}
+        shouldCloseOnOverlayClick
+        onRequestClose={toggleEditPostModal}
+      >
+        <EditPost />
+      </Modal>
+    );
+  };
   
   render() {
     const {categories, toggleAddPostModal} = this.props;
@@ -79,10 +98,10 @@ class App extends Component {
         <Body>
           <Categories categories={categories} />
 
-          <div>
+          <ContentPost>
             <Route exact path="/" component={ListPosts} />
             <Route exact path="/:category" component={ListPosts} />
-          </div>
+          </ContentPost>
 
           <OpenPostContent>
             <OpenPostLink onClick={toggleAddPostModal} />
@@ -90,6 +109,7 @@ class App extends Component {
         </Body>
 
         {this.renderNewPostModal()}
+        {this.renderEditPostModal()}
       </Main>
     );
   }
@@ -98,7 +118,8 @@ class App extends Component {
 const mapStateToProps = ({categories, posts}) => {
   return {
     categories: [...categories],
-    showNewPostModal: posts.showNewPostModal
+    showNewPostModal: posts.showNewPostModal,
+    showEditPostModal: posts.showEditPostModal,
   }
 }
 

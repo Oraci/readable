@@ -48,14 +48,18 @@ class NewPost extends Component {
   }
 }
 
-const mapStateToProps = ({categories}) => ({
-  categories: [...categories],
-});
+const mapStateToProps = ({ categories }) => {
+  return {  
+    categories: [...categories]
+  }
+}
 
-const mapDispatchToProps = dispatch => ({
-  addPost: post => dispatch({ type: FETCH_ADD_NEW_POST, post }),
-  onClose: () => dispatch({ type: WATCH_TOGGLE_ADD_POST_MODAL }),
-});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addPost: post => dispatch({ type: FETCH_ADD_NEW_POST, post }),
+    onClose: () => dispatch({ type: WATCH_TOGGLE_ADD_POST_MODAL }),
+  }
+}
 
 export default connect(
   mapStateToProps,

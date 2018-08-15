@@ -4,7 +4,11 @@ import {
   watchRequestPosts,
   watchPostVoteScore,
   watchAddNewPostModal,
-  watchAddNewPost
+  watchEditPostModal,
+  watchAddNewPost,
+  watchDeletePost,
+  watchFetchPost,
+  watchEditPost
 } from './posts';
 
 import { watchRequestCategories } from './categories';
@@ -14,7 +18,11 @@ export default function* rootSaga() {
     watchRequestPosts(),
     watchPostVoteScore(),
     watchAddNewPostModal(),
+    watchEditPostModal(),
     watchAddNewPost(),
+    watchDeletePost(),
+    watchFetchPost(),
+    watchEditPost(),
     watchRequestCategories()
   ]);
 }
