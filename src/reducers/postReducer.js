@@ -6,7 +6,8 @@ import {
   ADD_NEW_POST,
   DELETE_POST,
   RECEIVE_POST,
-  EDIT_POST
+  EDIT_POST,
+  FILTER_POSTS
 } from '../sagas/posts';
 
 const initialState = {
@@ -17,7 +18,7 @@ const initialState = {
 };
 
 function posts(state = initialState, action) {
-  const {type, posts, post, voted, added, deleted, edited} = action;
+  const {type, posts, post, voted, added, deleted, edited, filter} = action;
 
   switch (type) {
     case RECEIVE_POSTS:
@@ -87,6 +88,17 @@ function posts(state = initialState, action) {
         posts: [...editPost],
         showEditPostModal: false
       });
+
+    case FILTER_POSTS:
+      const sorted = [...state.posts];
+
+      const sortFn = key => (x, y) => x[key] < y[key];
+      sorted.sort(sortFn(filter));
+
+      return {
+        ...state,
+        posts: [...sorted],
+      };    
 
     default:
       return state;

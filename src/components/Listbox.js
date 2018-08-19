@@ -17,7 +17,7 @@ const Select = styled.select`
 `;
 
 const Listbox = ({
-  options = [], value = '', label, name, onChange,
+  options = [], value = '', label, name, onChange
 }) => (
   <div>
     <Label for={name}>{label}</Label>

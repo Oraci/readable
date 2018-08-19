@@ -33,6 +33,9 @@ export const FETCH_POST = 'FETCH_POST';
 export const RECEIVE_POST = 'RECEIVE_POST';
 export const EDIT_POST = 'EDIT_POST';
 
+export const WATCH_FILTER_POSTS = 'WATCH_FILTER_POSTS';
+export const FILTER_POSTS = 'FILTER_POSTS';
+
 function* requestPosts({category}) {
   try {
     const posts = yield call(fetchPosts, category);
@@ -90,6 +93,10 @@ function* editPostById({ postId, details }) {
   yield put({ type: EDIT_POST, edited });
 }
 
+function* filterPosts({filter}) {
+  yield put({ type: FILTER_POSTS, filter });
+}
+
 export function* watchRequestPosts() {
   yield takeEvery(REQUEST_POSTS, requestPosts);
 }
@@ -120,4 +127,8 @@ export function* watchFetchPost() {
 
 export function* watchEditPost() {
   yield takeEvery(FETCH_EDIT_POST, editPostById);
+}
+
+export function* watchFilterPosts() {
+  yield takeEvery(WATCH_FILTER_POSTS, filterPosts);
 }

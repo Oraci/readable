@@ -3,14 +3,15 @@ import {Route, withRouter} from 'react-router-dom';
 import Header from './Header';
 import Categories from './Categories';
 import ListPosts from './ListPosts';
+import Filter from './Filter'
 import styled from 'styled-components';
 import img from '../icons/message-bubble.svg';
 import {connect} from 'react-redux';
 import Modal from 'react-modal';
 import {NewPost, EditPost} from '../modals';
 
-import { REQUEST_CATEGORIES } from '../sagas/categories';
-import {WATCH_TOGGLE_ADD_POST_MODAL} from '../sagas/posts';
+import {REQUEST_CATEGORIES} from '../sagas/categories';
+import {WATCH_TOGGLE_ADD_POST_MODAL, WATCH_FILTER_POSTS} from '../sagas/posts';
 
 const Main = styled.div`
   height: 100%;
@@ -25,6 +26,10 @@ const Body = styled.div`
   flex-direction: row;
   display: flex;
 `;
+
+const FilterContent = styled.div`
+  width: 100%;
+`
 
 const ContentPost = styled.div`
   width: 100%;
@@ -87,6 +92,12 @@ class App extends Component {
       </Modal>
     );
   };
+
+  onFilter = (filters) => {
+    const { filterPosts } = this.props;
+
+    filterPosts(filters);
+  };  
   
   render() {
     const {categories, toggleAddPostModal} = this.props;
@@ -95,6 +106,13 @@ class App extends Component {
       <Main>
         <Header>
         </Header>
+
+        <FilterContent>
+          <Filter
+            onFilter={this.onFilter}
+          />
+        </FilterContent>
+
         <Body>
           <Categories categories={categories} />
 
@@ -118,6 +136,7 @@ class App extends Component {
 const mapStateToProps = ({categories, posts}) => {
   return {
     categories: [...categories],
+    posts: [...posts.posts],
     showNewPostModal: posts.showNewPostModal,
     showEditPostModal: posts.showEditPostModal,
   }
@@ -126,7 +145,8 @@ const mapStateToProps = ({categories, posts}) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getCategories: () => dispatch({type: REQUEST_CATEGORIES}),
-    toggleAddPostModal: () => dispatch({ type: WATCH_TOGGLE_ADD_POST_MODAL })
+    toggleAddPostModal: () => dispatch({ type: WATCH_TOGGLE_ADD_POST_MODAL }),
+    filterPosts: filter => dispatch({ type: WATCH_FILTER_POSTS, filter }),
   }
 }
 

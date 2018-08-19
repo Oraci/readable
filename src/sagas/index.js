@@ -8,6 +8,7 @@ import {
   watchAddNewPost,
   watchDeletePost,
   watchFetchPost,
+  watchFilterPosts,
   watchEditPost
 } from './posts';
 
@@ -23,6 +24,7 @@ export default function* rootSaga() {
     watchDeletePost(),
     watchFetchPost(),
     watchEditPost(),
+    watchFilterPosts(),
     watchRequestCategories()
   ]);
 }
