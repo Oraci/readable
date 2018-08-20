@@ -3,13 +3,22 @@ import styled from 'styled-components';
 import Post from './Post';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Filter from './Filter'
 
-import { REQUEST_POSTS } from '../sagas/posts';
+import { REQUEST_POSTS, WATCH_FILTER_POSTS } from '../sagas/posts';
 
 const ListPostsContent = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+`;
+
+const FilterContent = styled.div`
+  width: 100%;
+`
+
+const Title = styled.h2`
+  margin: 10px 0 0;
 `;
 
 class ListPosts extends Component {
@@ -32,6 +41,12 @@ class ListPosts extends Component {
     return match.params.category;
   };
 
+  onFilter = (filters) => {
+    const { filterPosts } = this.props;
+
+    filterPosts(filters);
+  };
+
   render() {
     const {posts} = this.props;
     const category = this.getCategory();
@@ -40,7 +55,13 @@ class ListPosts extends Component {
 
     return (
       <ListPostsContent>
-        <h2>{title}</h2>
+        <FilterContent>
+          <Filter
+            onFilter={this.onFilter}
+          />
+        </FilterContent>
+
+        <Title>{title}</Title>
       
         {
           filteredPosts.length === 0 && <div>No posts</div>
@@ -68,6 +89,7 @@ const mapStateToProps = ({posts = {}, categories= []}) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getPosts: (category) => dispatch({type: REQUEST_POSTS, category}),
+    filterPosts: filter => dispatch({ type: WATCH_FILTER_POSTS, filter })
   }
 }
 

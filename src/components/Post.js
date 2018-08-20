@@ -16,17 +16,22 @@ import {
 } from '../sagas/posts';
 
 const PostContent = styled.div`
-  border-top: 1px solid #f2af1e;
+  border: 1px solid #f2af1e;
   display: flex;
   flex: 1;
   flex-direction: column;
+  margin: 10px 10px 10px 0;
+  padding: 10px;
+  border-radius: 10px;
 `;
 
-const Title = styled.h1``;
+const Title = styled.h1`
+  margin: 0;
+  cursor: pointer;
+`;
 
 const DivActions = styled.div`
   display: flex;
-  margin-bottom: 10px;
 `;
 
 const ActionDiv = styled.div`
@@ -64,6 +69,15 @@ const CategoryLink = styled(Link)`
   white-space: nowrap;
 `;
 
+const Body = styled.div`
+  border: 1px solid;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  min-height: 50px;
+  color: #940101;
+`;
+
 class Post extends Component {
   onUpvote = () => {
     const { post, postScore } = this.props;
@@ -84,20 +98,28 @@ class Post extends Component {
   }
 
   onEdit = () => {
-    const { post, toggleEditPostModal } = this.props;
+    const { post, toggleEditPostModal} = this.props;
 
     toggleEditPostModal(post);
   };
 
+  onClick = () => {
+    const { post, history } = this.props;
+    const { id, category } = post;
+
+    history.push(`/${category}/${id}`);
+  };
+
   render() {
-    const {post} = this.props;
-    const {title, category, author, timestamp, voteScore} = post;
+    const {post, showBody} = this.props;
+    const {title, category, author, timestamp, voteScore, body} = post;
 
     return (
       <PostContent>
-        <Title>{title}</Title>
+        <Title onClick={this.onClick}>{title}</Title>
         <CategoryLink to={`/${category}`}>{category}</CategoryLink>
         <Author>By {author} under {category} on {printDate(timestamp)}</Author>
+        {showBody && <Body>{body}</Body>}
 
         <DivActions>
           <ActionDiv><SpanImg img={thumbUp} onClick={this.onUpvote} /></ActionDiv>

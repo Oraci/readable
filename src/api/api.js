@@ -49,6 +49,11 @@ export const fetchPostById = (postId: string) =>
   fetch(`${api}/posts/${postId}`, {headers})
     .then(res => res.json())
     .then(data => data);
+
+export const fetchComments = (post: string) =>
+  fetch(`${api}/posts/${post}/comments`, {headers})
+    .then(res => res.json())
+    .then(data => data);    
   
 export const addPost = (newPost: Post) =>
   post('/posts', newPost)

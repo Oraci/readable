@@ -54,7 +54,7 @@ function* voteScore({ postId, option }) {
   }
 }
 
-function* addNewPost({ post }) {
+function* addNewPost({post}) {
   const newPost = {
     ...post,
     id: guid(),
@@ -71,7 +71,7 @@ function* toggleAddPostModal() {
   yield put({ type: TOGGLE_ADD_POST_MODAL });
 }
 
-function* deletePostById({ post }) {
+function* deletePostById({post}) {
   const deleted = yield call(deletePost, post);
 
   yield put({ type: DELETE_POST, deleted });
@@ -81,13 +81,13 @@ function* toggleEditModal({post}) {
   yield put({ type: TOGGLE_EDIT_POST_MODAL, post });
 }
 
-function* fetchPost({ postId }) {
+function* fetchPost({postId}) {
   const post = yield call(fetchPostById, postId);
 
   yield put({ type: RECEIVE_POST, post});
 }
 
-function* editPostById({ postId, details }) {
+function* editPostById({postId, details}) {
   const edited = yield call(editPost, postId, details);
 
   yield put({ type: EDIT_POST, edited });

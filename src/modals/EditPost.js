@@ -23,6 +23,12 @@ class EditPost extends Component {
     savePost(post.id, details);
   };
 
+  onClose = () => {
+    const {onClose, post} = this.props;
+
+    onClose(post);
+  }
+
   onTextChange = name => (event) => {
     const { post } = this.state;
 
@@ -38,7 +44,7 @@ class EditPost extends Component {
       <div>
         <h2>Edit post</h2>
         <PostForm
-          onClose={onClose}
+          onClose={this.onClose}
           post={{ ...post }}
           onSave={this.onSave}
           categories={categories}
@@ -58,7 +64,7 @@ const mapStateToProps = ({ categories, posts }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClose: () => dispatch({ type: WATCH_TOGGLE_EDIT_POST_MODAL }),
+    onClose: (post) => dispatch({ type: WATCH_TOGGLE_EDIT_POST_MODAL, post}),
     savePost: (postId, details) => dispatch({ type: FETCH_EDIT_POST, postId, details })
   }
 }

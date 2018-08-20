@@ -12,7 +12,9 @@ import {
   watchEditPost
 } from './posts';
 
-import { watchRequestCategories } from './categories';
+import {watchRequestCategories} from './categories';
+
+import {watchRequestComments} from './comments';
 
 export default function* rootSaga() {
   yield all([
@@ -25,6 +27,7 @@ export default function* rootSaga() {
     watchFetchPost(),
     watchEditPost(),
     watchFilterPosts(),
-    watchRequestCategories()
+    watchRequestCategories(),
+    watchRequestComments()
   ]);
 }

@@ -84,7 +84,7 @@ function posts(state = initialState, action) {
 
       return Object.assign({
         ...state,
-        post: {...editPost},
+        post: {...edited},
         posts: [...editPost],
         showEditPostModal: false
       });

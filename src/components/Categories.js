@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import {capitalize} from '../utils/helpers';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 
 const CategoriesContent = styled.div`
   justify-content: center;
   display: flex;
   align-items: center;
-  min-width: 200px;
+  min-width: 120px;
   flex-direction: column;
   margin: 0;
   height: 100%;
@@ -43,7 +44,7 @@ class Categories extends Component {
           categories.length && categories.map(category => (
             <Li key={category.name}> 
               <LinkCategory 
-                to={`${category.path}`}
+                to={`/${category.path}`}
               >{capitalize(category.name)}</LinkCategory>
             </Li>
           ))
@@ -58,6 +59,6 @@ const mapStateToProps = (state) => {
   return {...state}
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps
-)(Categories);
+)(Categories));
