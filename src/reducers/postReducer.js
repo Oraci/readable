@@ -22,7 +22,10 @@ function posts(state = initialState, action) {
 
   switch (type) {
     case RECEIVE_POSTS:
-      return Object.assign({...state, posts: [...posts]});
+      return Object.assign({
+        ...state, 
+        posts: [...posts]
+      });
 
     case RECEIVE_POST_SCORE:
       const newPosts = state.posts.map(p => {

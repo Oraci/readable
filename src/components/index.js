@@ -9,6 +9,7 @@ import ListPosts from './ListPosts';
 import Post from './Post';
 import TextArea from './TextArea';
 import TextInput from './TextInput';
+import Actions from './Actions';
 
 export {
   App,
@@ -22,4 +23,5 @@ export {
   Post,
   TextArea,
   TextInput,
+  Actions
 };

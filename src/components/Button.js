@@ -6,7 +6,9 @@ const DivButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   margin-right: 8px;
-  border-radius: 3px;
+  border-radius: 10px;
+  background-color: #f2af1e;
+  color: white;
 `;
 
 const Button = ({ label, onClick }) => (

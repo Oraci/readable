@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
-import thumbUp from '../icons/thumb-up-button.svg';
-import thumbDown from '../icons/thumb-down-button.svg';
-import thumbEdit from '../icons/edit.svg';
-import thumbDelete from '../icons/delete.svg';
 import { printDate } from '../utils/helpers';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
+import Actions from './Actions';
 
 import { 
   REQUEST_POST_SCORE, 
@@ -27,26 +24,6 @@ const PostContent = styled.div`
 
 const Title = styled.h1`
   margin: 0;
-  cursor: pointer;
-`;
-
-const DivActions = styled.div`
-  display: flex;
-`;
-
-const ActionDiv = styled.div`
-  display: flex;
-  padding-right: 10px;
-`;
-
-const SpanImg = styled.span`
-  display: block;
-  width: 20px;
-  height: 20px;
-  background-image: url(${props => props.img});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px;
   cursor: pointer;
 `;
 
@@ -121,13 +98,13 @@ class Post extends Component {
         <Author>By {author} under {category} on {printDate(timestamp)}</Author>
         {showBody && <Body>{body}</Body>}
 
-        <DivActions>
-          <ActionDiv><SpanImg img={thumbUp} onClick={this.onUpvote} /></ActionDiv>
-          <ActionDiv><SpanImg img={thumbDown} onClick={this.onDownvote} /></ActionDiv>
-          <ActionDiv><span>{voteScore}</span></ActionDiv>
-          <ActionDiv><SpanImg img={thumbEdit} onClick={this.onEdit} />Editar</ActionDiv>
-          <ActionDiv><SpanImg img={thumbDelete} onClick={this.onDelete} />Deletar</ActionDiv>
-        </DivActions>
+        <Actions
+          voteScore={voteScore}
+          onUpvote={this.onUpvote} 
+          onDownvote={this.onDownvote}
+          onEdit={this.onEdit}
+          onDelete={this.onDelete}
+        />
       </PostContent>
     )
   }

@@ -1,11 +1,21 @@
 import {RECEIVE_COMMENTS} from '../sagas/comments';
 
-function comments(state = [], action) {
+const initialState = {
+  comments: [],
+  showEditCommentModal: false,
+  showAddNewCommentModal: false
+}
+
+function comments(state = initialState, action) {
   const {type, comments} = action;
 
   switch (type) {
     case RECEIVE_COMMENTS:
-      return state;
+      return Object.assign({
+        ...state, 
+        comments: [...comments]
+      });
+
     default:
       return state;
   }

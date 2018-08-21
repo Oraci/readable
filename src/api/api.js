@@ -50,8 +50,8 @@ export const fetchPostById = (postId: string) =>
     .then(res => res.json())
     .then(data => data);
 
-export const fetchComments = (post: string) =>
-  fetch(`${api}/posts/${post}/comments`, {headers})
+export const fetchComments = (postId: string) =>
+  fetch(`${api}/posts/${postId}/comments`, {headers})
     .then(res => res.json())
     .then(data => data);    
   

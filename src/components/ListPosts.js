@@ -1,11 +1,18 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import Post from './Post';
+import Button from './Button';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import Filter from './Filter'
+import Filter from './Filter';
+import Modal from 'react-modal';
+import {NewPost, EditPost} from '../modals';
 
-import { REQUEST_POSTS, WATCH_FILTER_POSTS } from '../sagas/posts';
+import {
+  REQUEST_POSTS, 
+  WATCH_FILTER_POSTS, 
+  WATCH_TOGGLE_ADD_POST_MODAL
+} from '../sagas/posts';
 
 const ListPostsContent = styled.div`
   display: flex;
@@ -47,8 +54,38 @@ class ListPosts extends Component {
     filterPosts(filters);
   };
 
+  renderNewPostModal = () => {
+    const { showNewPostModal, toggleAddPostModal } = this.props;
+  
+    return (
+      <Modal
+        ariaHideApp={false}
+        isOpen={showNewPostModal}
+        shouldCloseOnOverlayClick
+        onRequestClose={toggleAddPostModal}
+      >
+        <NewPost />
+      </Modal>
+    );
+  };
+  
+  renderEditPostModal = () => {
+    const { showEditPostModal, toggleEditPostModal } = this.props;
+  
+    return (
+      <Modal
+        ariaHideApp={false}
+        isOpen={showEditPostModal}
+        shouldCloseOnOverlayClick
+        onRequestClose={toggleEditPostModal}
+      >
+        <EditPost />
+      </Modal>
+    );
+  };  
+
   render() {
-    const {posts} = this.props;
+    const {posts, toggleAddPostModal} = this.props;
     const category = this.getCategory();
     const filteredPosts = category ? posts.filter((p) => p.category === category) : posts;
     const title = `Showing ${category ? `posts for ${category}` : 'all posts'}`;
@@ -61,6 +98,10 @@ class ListPosts extends Component {
           />
         </FilterContent>
 
+        <div>
+          <Button label="Add new post" onClick={toggleAddPostModal} />
+        </div>
+
         <Title>{title}</Title>
       
         {
@@ -68,10 +109,13 @@ class ListPosts extends Component {
         }
 
         {
-          filteredPosts && filteredPosts.map((post) =>
+          filteredPosts.length && filteredPosts.map((post) =>
             <Post key={post.id} post={post}/>
           )
         }
+
+        {this.renderNewPostModal()}
+        {this.renderEditPostModal()}        
       </ListPostsContent>
     )
   }
@@ -89,7 +133,8 @@ const mapStateToProps = ({posts = {}, categories= []}) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getPosts: (category) => dispatch({type: REQUEST_POSTS, category}),
-    filterPosts: filter => dispatch({ type: WATCH_FILTER_POSTS, filter })
+    filterPosts: filter => dispatch({ type: WATCH_FILTER_POSTS, filter }),
+    toggleAddPostModal: () => dispatch({ type: WATCH_TOGGLE_ADD_POST_MODAL }),
   }
 }
 

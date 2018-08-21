@@ -4,13 +4,9 @@ import Header from './Header';
 import Categories from './Categories';
 import ListPosts from './ListPosts';
 import styled from 'styled-components';
-import img from '../icons/message-bubble.svg';
 import {connect} from 'react-redux';
-import Modal from 'react-modal';
-import {NewPost, EditPost} from '../modals';
 
 import {REQUEST_CATEGORIES} from '../sagas/categories';
-import {WATCH_TOGGLE_ADD_POST_MODAL} from '../sagas/posts';
 import PostDetails from './PostDetails';
 
 const Main = styled.div`
@@ -31,66 +27,15 @@ const ContentPost = styled.div`
   width: 100%;
 `;
 
-const OpenPostContent = styled.div`
-  position: fixed;
-  right: 25px;
-  bottom: 25px;
-`;
-
-const OpenPostLink = styled.span`
-  display: block;
-  width: 50px;
-  height: 50px;
-  border-radius: 100% / 50%;
-  background: #f2af1e;
-  background-image: url(${img});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 28px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  font-size: 0;
-  cursor: pointer;
-`;
-
 class App extends Component {
   componentDidMount() {
     const {getCategories} = this.props;
 
     getCategories();
   }
-
-  renderNewPostModal = () => {
-    const { showNewPostModal, toggleAddPostModal } = this.props;
-
-    return (
-      <Modal
-        ariaHideApp={false}
-        isOpen={showNewPostModal}
-        shouldCloseOnOverlayClick
-        onRequestClose={toggleAddPostModal}
-      >
-        <NewPost />
-      </Modal>
-    );
-  };
-
-  renderEditPostModal = () => {
-    const { showEditPostModal, toggleEditPostModal } = this.props;
-
-    return (
-      <Modal
-        ariaHideApp={false}
-        isOpen={showEditPostModal}
-        shouldCloseOnOverlayClick
-        onRequestClose={toggleEditPostModal}
-      >
-        <EditPost />
-      </Modal>
-    );
-  };
   
   render() {
-    const {categories, toggleAddPostModal} = this.props;
+    const {categories} = this.props;
 
     return (
       <Main>
@@ -105,32 +50,21 @@ class App extends Component {
             <Route exact path="/:category" component={ListPosts} />
             <Route path="/:category/:post" component={PostDetails} />
           </ContentPost>
-
-          <OpenPostContent>
-            <OpenPostLink onClick={toggleAddPostModal} />
-          </OpenPostContent>
         </Body>
-
-        {this.renderNewPostModal()}
-        {this.renderEditPostModal()}
       </Main>
     );
   }
 }
 
-const mapStateToProps = ({categories, posts}) => {
+const mapStateToProps = ({categories}) => {
   return {
-    categories: [...categories],
-    posts: [...posts.posts],
-    showNewPostModal: posts.showNewPostModal,
-    showEditPostModal: posts.showEditPostModal,
+    categories: [...categories]
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCategories: () => dispatch({type: REQUEST_CATEGORIES}),
-    toggleAddPostModal: () => dispatch({ type: WATCH_TOGGLE_ADD_POST_MODAL }),
+    getCategories: () => dispatch({type: REQUEST_CATEGORIES})
   }
 }
 

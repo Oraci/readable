@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import Post from './Post';
+import Button from './Button';
+import Comment from './Comment';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -17,22 +19,34 @@ class PostDetails extends Component {
   }
 
   render() {
-    const {post} = this.props;
+    const {post, comments} = this.props;
 
     return (
       <div>
         <Post showBody={true} post={post}/>
+
+        <div>
+          <Button label="Add new comment" />
+        </div>
+
+        {
+          comments.length === 0 && <div>No comments</div>
+        }
+
+        {
+          comments.length && comments.map((comment) =>
+            <Comment key={comment.id} comment={comment} />
+          )
+        }        
       </div>
     )
   }
 }
 
-const mapStateToProps = (state = {}) => {
-  const {posts} = state;
-  const {post} = posts;
-
+const mapStateToProps = ({posts = {}, comments = []}) => {
   return {
-    post: {...post}
+    post: {...posts.post},
+    comments: [...comments.comments]
   }
 }
 
