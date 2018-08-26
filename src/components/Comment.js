@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import { printDate } from '../utils/helpers';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import Actions from './Actions';
@@ -20,11 +19,6 @@ const CommentContent = styled.div`
   margin: 10px 10px 10px 0;
   padding: 10px;
   border-radius: 10px;
-`;
-
-const Title = styled.h1`
-  margin: 0;
-  cursor: pointer;
 `;
 
 const Author = styled.p`

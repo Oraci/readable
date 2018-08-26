@@ -5,9 +5,12 @@ import Button from './Button';
 import Comment from './Comment';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import {NewComment, EditComment} from '../modals';
+import {NewComment, EditComment, EditPost} from '../modals';
 
-import {FETCH_POST} from '../sagas/posts';
+import {
+  FETCH_POST, 
+  WATCH_TOGGLE_ADD_POST_MODAL
+} from '../sagas/posts';
 
 import {
   REQUEST_COMMENTS, 
@@ -23,6 +26,21 @@ class PostDetails extends Component {
     getPost(postId);
     getComments(postId);
   }
+
+  renderEditPostModal = () => {
+    const { showEditPostModal, toggleEditPostModal } = this.props;
+  
+    return (
+      <Modal
+        ariaHideApp={false}
+        isOpen={showEditPostModal}
+        shouldCloseOnOverlayClick
+        onRequestClose={toggleEditPostModal}
+      >
+        <EditPost />
+      </Modal>
+    );
+  };  
 
   renderNewCommentModal = () => {
     const { showAddNewCommentModal, toggleAddNewCommentModal } = this.props;
@@ -75,6 +93,7 @@ class PostDetails extends Component {
           )
         }  
         
+        {this.renderEditPostModal()}
         {this.renderNewCommentModal()}
         {this.renderEditCommentModal()}        
       </div>
@@ -85,7 +104,9 @@ class PostDetails extends Component {
 const mapStateToProps = ({posts = {}, comments = []}) => {
   return {
     post: {...posts.post},
+    posts: [...posts.posts],
     comments: [...comments.comments],
+    showEditPostModal: posts.showEditPostModal,
     showEditCommentModal: comments.showEditCommentModal,
     showAddNewCommentModal: comments.showAddNewCommentModal,
   }
@@ -95,6 +116,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getPost: postId => dispatch({ type: FETCH_POST, postId }),
     getComments: postId => dispatch({ type: REQUEST_COMMENTS, postId }),
+    toggleAddPostModal: () => dispatch({ type: WATCH_TOGGLE_ADD_POST_MODAL }),
     toggleAddNewCommentModal: () => dispatch({ type: WATCH_TOGGLE_ADD_COMMENT_MODAL }),
     toggleEditCommentModal: comment => dispatch({ type: WATCH_TOGGLE_EDIT_COMMENT_MODAL, comment }),  
   }

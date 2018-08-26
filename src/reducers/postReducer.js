@@ -39,7 +39,8 @@ function posts(state = initialState, action) {
       }) || [];
 
       return Object.assign({
-        ...state, 
+        ...state,
+        post: {...voted},
         posts: [...newPosts]
       });
 
@@ -72,6 +73,7 @@ function posts(state = initialState, action) {
     case DELETE_POST:
       return Object.assign({
         ...state,
+        post: {},
         posts: [...state.posts.filter(post => post.id !== deleted.id)]
       });
 

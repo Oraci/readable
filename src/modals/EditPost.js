@@ -38,7 +38,7 @@ class EditPost extends Component {
   };
 
   render() {
-    const { post, categories, onClose } = this.props;
+    const {post, categories} = this.props;
 
     return (
       <div>
