@@ -1,13 +1,19 @@
 import React, {Component} from 'react';
-import styled from 'styled-components';
+import Modal from 'react-modal';
 import Post from './Post';
 import Button from './Button';
 import Comment from './Comment';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import {NewComment, EditComment} from '../modals';
 
-import {REQUEST_COMMENTS} from '../sagas/comments';
 import {FETCH_POST} from '../sagas/posts';
+
+import {
+  REQUEST_COMMENTS, 
+  WATCH_TOGGLE_ADD_COMMENT_MODAL,
+  WATCH_TOGGLE_EDIT_COMMENT_MODAL
+} from '../sagas/comments';
 
 class PostDetails extends Component {
   componentDidMount() {
@@ -18,26 +24,59 @@ class PostDetails extends Component {
     getComments(postId);
   }
 
+  renderNewCommentModal = () => {
+    const { showAddNewCommentModal, toggleAddNewCommentModal } = this.props;
+
+    return (
+      <Modal
+        ariaHideApp={false}
+        shouldCloseOnOverlayClick
+        isOpen={showAddNewCommentModal}
+        onRequestClose={toggleAddNewCommentModal}
+      >
+        <NewComment />
+      </Modal>
+    );
+  };
+
+  renderEditCommentModal = () => {
+    const { showEditCommentModal, toggleEditCommentModal } = this.props;
+
+    return (
+      <Modal
+        ariaHideApp={false}
+        shouldCloseOnOverlayClick
+        isOpen={showEditCommentModal}
+        onRequestClose={toggleEditCommentModal}
+      >
+        <EditComment />
+      </Modal>
+    );
+  };
+
   render() {
-    const {post, comments} = this.props;
+    const {post, comments, toggleAddNewCommentModal} = this.props;
 
     return (
       <div>
         <Post showBody={true} post={post}/>
 
         <div>
-          <Button label="Add new comment" />
+          <Button label="Add new comment" onClick={toggleAddNewCommentModal}/>
         </div>
 
         {
-          comments.length === 0 && <div>No comments</div>
+          comments.length === 0 ? <div>No comments</div> : <div>Comments: {comments.length}</div>
         }
 
         {
-          comments.length && comments.map((comment) =>
+          comments.length > 0 && comments.map((comment) =>
             <Comment key={comment.id} comment={comment} />
           )
-        }        
+        }  
+        
+        {this.renderNewCommentModal()}
+        {this.renderEditCommentModal()}        
       </div>
     )
   }
@@ -46,7 +85,9 @@ class PostDetails extends Component {
 const mapStateToProps = ({posts = {}, comments = []}) => {
   return {
     post: {...posts.post},
-    comments: [...comments.comments]
+    comments: [...comments.comments],
+    showEditCommentModal: comments.showEditCommentModal,
+    showAddNewCommentModal: comments.showAddNewCommentModal,
   }
 }
 
@@ -54,6 +95,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getPost: postId => dispatch({ type: FETCH_POST, postId }),
     getComments: postId => dispatch({ type: REQUEST_COMMENTS, postId }),
+    toggleAddNewCommentModal: () => dispatch({ type: WATCH_TOGGLE_ADD_COMMENT_MODAL }),
+    toggleEditCommentModal: comment => dispatch({ type: WATCH_TOGGLE_EDIT_COMMENT_MODAL, comment }),  
   }
 }
 

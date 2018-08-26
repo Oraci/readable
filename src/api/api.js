@@ -75,3 +75,22 @@ export const editPost = (postId: string, details: PostDetails) =>
     .then(res => res.json())
     .then(data => data);
   
+export const commentVotes = (commentId: string, option: string) =>
+  post(`/comments/${commentId}`, { option })
+    .then(res => res.json())
+    .then(data => data);
+  
+export const deleteComment = (comment: string) =>
+  del(`/comments/${comment}`)
+    .then(res => res.json())
+    .then(data => data);
+
+export const editComment = (commentId: string, details: PostDetails) =>
+  put(`/comments/${commentId}`, details)
+    .then(res => res.json())
+    .then(data => data);
+  
+export const addComment = (comment: Comment) =>
+  post('/comments', comment)
+    .then(res => res.json())
+    .then(data => data);

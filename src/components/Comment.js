@@ -6,11 +6,11 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import Actions from './Actions';
 
-// import { 
-  // REQUEST_COMMENT_SCORE, 
-  // FETCH_DELETE_COMMENT,
-  // WATCH_TOGGLE_EDIT_COMMENT_MODAL
-// } from '../sagas/comments';
+import { 
+  REQUEST_COMMENT_SCORE,
+  FETCH_DELETE_COMMENT,
+  WATCH_TOGGLE_EDIT_COMMENT_MODAL
+} from '../sagas/comments';
 
 const CommentContent = styled.div`
   border: 1px solid #a1a1a1;
@@ -46,7 +46,7 @@ const Body = styled.div`
 class Comment extends Component {
   onUpvote = () => {
     const { comment, commentScore } = this.props;
-  
+    
     commentScore(comment.id, 'upVote');
   };
 
@@ -102,9 +102,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // commentScore: (commentId, option) => dispatch({type: REQUEST_COMMENT_SCORE, commentId, option}),
-    // deleteComment: comment => dispatch({ type: FETCH_DELETE_COMMENT, comment }),
-    // toggleEditCommentModal: comment => dispatch({ type: WATCH_TOGGLE_EDIT_COMMENT_MODAL, comment }),
+    commentScore: (commentId, option) => dispatch({type: REQUEST_COMMENT_SCORE, commentId, option}),
+    deleteComment: comment => dispatch({ type: FETCH_DELETE_COMMENT, comment }),
+    toggleEditCommentModal: comment => dispatch({ type: WATCH_TOGGLE_EDIT_COMMENT_MODAL, comment }),
   }
 }
 

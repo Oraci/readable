@@ -109,7 +109,7 @@ class ListPosts extends Component {
         }
 
         {
-          filteredPosts.length && filteredPosts.map((post) =>
+          filteredPosts.length > 0 && filteredPosts.map((post) =>
             <Post key={post.id} post={post}/>
           )
         }
@@ -126,7 +126,7 @@ const mapStateToProps = ({posts = {}, categories= []}) => {
     posts: [...posts.posts],
     categories: [...categories],
     showNewPostModal: posts.showNewPostModal,
-    showEditPostModal: posts.showEditPostModal,      
+    showEditPostModal: posts.showEditPostModal,
   }
 }
 
