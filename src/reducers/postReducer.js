@@ -73,7 +73,7 @@ function posts(state = initialState, action) {
     case DELETE_POST:
       return Object.assign({
         ...state,
-        post: {},
+        post: {...deleted},
         posts: [...state.posts.filter(post => post.id !== deleted.id)]
       });
 

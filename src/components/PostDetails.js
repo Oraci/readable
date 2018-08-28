@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import Post from './Post';
 import Button from './Button';
 import Comment from './Comment';
+import NotFound from './NotFound';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {NewComment, EditComment, EditPost} from '../modals';
@@ -72,8 +73,16 @@ class PostDetails extends Component {
     );
   };
 
+  renderNotFound = (message = '') => (
+    <NotFound message={message} />
+  );
+
   render() {
     const {post, comments, toggleAddNewCommentModal} = this.props;
+
+    if (Object.keys(post).length === 0 || post && post.deleted) {
+      return this.renderNotFound(`The post doesn't exist.`);  
+    }
 
     return (
       <div>

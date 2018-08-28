@@ -10,6 +10,7 @@ import Post from './Post';
 import TextArea from './TextArea';
 import TextInput from './TextInput';
 import Actions from './Actions';
+import NotFound from './NotFound';
 
 export {
   App,
@@ -23,5 +24,6 @@ export {
   Post,
   TextArea,
   TextInput,
-  Actions
+  Actions,
+  NotFound
 };
